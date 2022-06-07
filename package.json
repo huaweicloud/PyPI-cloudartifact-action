@@ -4,6 +4,8 @@
   "description": "Action for uploading or downloading artifact from HuaweiCloud PyPI CloudArtifact",
   "main": "lib/main.js",
   "scripts": {
+    "lint-create": "eslint --init",
+    "lint": "eslint src",
     "test": "jest"
   },
   "repository": {
@@ -19,5 +21,10 @@
   "bugs": {
     "url": "https://github.com/huaweicloud/PyPI-cloudartifact-action/issues"
   },
-  "homepage": "https://github.com/huaweicloud/PyPI-cloudartifact-action#readme"
+  "homepage": "https://github.com/huaweicloud/PyPI-cloudartifact-action#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
+    "eslint": "^8.17.0"
+  }
 }
