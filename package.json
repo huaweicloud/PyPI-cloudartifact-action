@@ -1,0 +1,23 @@
+{
+  "name": "pypi-cloudartifact-action",
+  "version": "1.0.0",
+  "description": "Action for uploading or downloading artifact from HuaweiCloud PyPI CloudArtifact",
+  "main": "lib/main.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huaweicloud/PyPI-cloudartifact-action.git"
+  },
+  "keywords": [
+    "PyPI",
+    "CloudArtifact"
+  ],
+  "author": "Chenyt26",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/huaweicloud/PyPI-cloudartifact-action/issues"
+  },
+  "homepage": "https://github.com/huaweicloud/PyPI-cloudartifact-action#readme"
+}
