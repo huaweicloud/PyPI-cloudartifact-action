@@ -1,0 +1,25 @@
+# action.yml
+name: 'HuaweiCloud PyPI CloudArtifact'
+description: 'Action for uploading/downloading PyPI packages to HuaweiCloud PyPI CloudArtifact'
+inputs:
+  repository:
+    description: 'The URL of the PyPI repository.'
+    required: false
+    default: 'https://pypi.org/simple'
+  username:
+    description: 'The registered username on the repository.'
+    required: false
+  password:
+    description: 'The password that will used to authenticate the username.'
+    required: false
+  distutils-index-server:
+    description: 'The name of the section describing a repository.'
+    required: false
+    default: 'pypi'
+branding:
+  icon: 'cloud'
+  color: 'red'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
+
