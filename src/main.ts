@@ -1,5 +1,10 @@
-console.log("断点调试");
-for(let i: number = 0; i < 3; i++){
-    console.log(i);
+import * as core from '@actions/core';
+import * as context from './context';
+
+export async function run() {
+  core.info('Generate configurations for PyPI');
+  const inputs: context.Inputs = context.getInputs();
+
 }
-console.log("执行完毕");
+
+run().catch(core.setFailed);
