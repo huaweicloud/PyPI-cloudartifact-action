@@ -1,46 +1,46 @@
 {
-  "name": "pypi-cloudartifact-action",
-  "version": "1.0.0",
-  "description": "Action for uploading or downloading artifact from HuaweiCloud PyPI CloudArtifact",
-  "main": "lib/main.js",
-  "scripts": {
-    "build": "tsc",
-    "run": "node ./lib/main.js",
-    "package": "ncc build --source-map --license licenses.txt",
-    "lint-create": "eslint --init",
-    "lint": "eslint src",
-    "format": "prettier --write **/*.ts",
-    "format-check": "prettier --check **/*.ts",
-    "test": "jest",
-    "all": "npm run lint && npm run format && npm run build && npm run package"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/huaweicloud/PyPI-cloudartifact-action.git"
-  },
-  "keywords": [
-    "PyPI",
-    "CloudArtifact"
-  ],
-  "author": "Chenyt26",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/huaweicloud/PyPI-cloudartifact-action/issues"
-  },
-  "homepage": "https://github.com/huaweicloud/PyPI-cloudartifact-action#readme",
-  "devDependencies": {
-    "@types/jest": "^28.1.1",
-    "@typescript-eslint/eslint-plugin": "^5.27.1",
-    "@typescript-eslint/parser": "^5.27.1",
-    "@vercel/ncc": "^0.34.0",
-    "eslint": "^8.17.0",
-    "jest": "^28.1.1",
-    "prettier": "2.6.2",
-    "ts-jest": "^28.0.4",
-    "ts-node": "^10.8.1",
-    "typescript": "^4.7.3"
-  },
-  "dependencies": {
-    "@actions/core": "^1.8.2"
-  }
+    "name": "pypi-cloudartifact-action",
+    "version": "1.0.0",
+    "description": "Action for uploading or downloading artifact from HuaweiCloud PyPI CloudArtifact",
+    "main": "lib/main.js",
+    "scripts": {
+        "build": "tsc",
+        "run": "node ./lib/main.js",
+        "package": "ncc build --source-map --license licenses.txt",
+        "lint-create": "eslint --init",
+        "lint": "eslint src",
+        "format": "prettier --write **/*.ts",
+        "format-check": "prettier --check **/*.ts",
+        "test": "jest",
+        "all": "npm run lint && npm run format && npm run build && npm run package"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/huaweicloud/PyPI-cloudartifact-action.git"
+    },
+    "keywords": [
+        "PyPI",
+        "CloudArtifact"
+    ],
+    "author": "Chenyt26",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/huaweicloud/PyPI-cloudartifact-action/issues"
+    },
+    "homepage": "https://github.com/huaweicloud/PyPI-cloudartifact-action#readme",
+    "devDependencies": {
+        "@types/jest": "^28.1.1",
+        "@typescript-eslint/eslint-plugin": "^5.27.1",
+        "@typescript-eslint/parser": "^5.27.1",
+        "@vercel/ncc": "^0.34.0",
+        "eslint": "^8.17.0",
+        "jest": "^28.1.1",
+        "prettier": "2.6.2",
+        "ts-jest": "^28.0.4",
+        "ts-node": "^10.8.1",
+        "typescript": "^4.7.3"
+    },
+    "dependencies": {
+      "@actions/core": "^1.8.2"
+    }
 }
