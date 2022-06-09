@@ -2,6 +2,10 @@
 name: 'HuaweiCloud PyPI CloudArtifact'
 description: 'Action for uploading/downloading PyPI packages to HuaweiCloud PyPI CloudArtifact'
 inputs:
+  pypi-operation-type:
+    description: 'install or upload. install: to install PyPI package from the repository; upload: publish PyPI package to the repository'
+    required: true
+    default: 'install'
   repository:
     description: 'The URL of the PyPI repository.'
     required: false
