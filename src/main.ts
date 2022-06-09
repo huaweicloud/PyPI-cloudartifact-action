@@ -17,7 +17,7 @@ export async function run() {
     // 安装依赖工具twine
     await twine.installTwine();
 
-    pypi.writePypirc(inputs)
+    pypi.generatePypirc(inputs);
 
     console.log(pypi.getPypircPath());
 }
