@@ -17,9 +17,10 @@ export async function run() {
     // 安装依赖工具twine
     await twine.installTwine();
 
+    // 生成.pypirc配置内容
     pypi.generatePypirc(inputs);
 
-    console.log(pypi.getPypircPath());
+    core.info(`Run the following command to publish the Python package to the PyPI repository: twine upload -r ${inputs.distutilsIndexServer} dist/*`);
 }
 
 run().catch(core.setFailed);

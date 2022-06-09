@@ -2,27 +2,46 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 842:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getInputs = void 0;
+exports.DEFAULT_REGISTRY = exports.getInputs = void 0;
+const core = __importStar(__nccwpck_require__(186));
 function getInputs() {
-    // return {
-    //     repository: core.getInput('repository', {required: false}),
-    //     username: core.getInput('username', {required: false}),
-    //     password: core.getInput('password', {required: false}),
-    //     distutilsIndexServer: core.getInput('distutils-index-server', {required: false})
-    // };
     return {
-        repository: 'https://pypi.org/simple',
-        username: '',
-        password: '',
-        distutilsIndexServer: 'pypi'
+        repository: core.getInput('repository', { required: false }),
+        username: core.getInput('username', { required: false }),
+        password: core.getInput('password', { required: false }),
+        distutilsIndexServer: core.getInput('distutils-index-server', { required: false })
     };
 }
 exports.getInputs = getInputs;
+exports.DEFAULT_REGISTRY = 'https://pypi.org/simple';
 //# sourceMappingURL=context.js.map
 
 /***/ }),
@@ -82,8 +101,9 @@ function run() {
         }
         // 安装依赖工具twine
         yield twine.installTwine();
-        pypi.writePypirc(inputs);
-        console.log(pypi.getPypircPath());
+        // 生成.pypirc配置内容
+        pypi.generatePypirc(inputs);
+        core.info(`Run the following command to publish the Python package to the PyPI repository: twine upload -r ${inputs.distutilsIndexServer} dist/*`);
     });
 }
 exports.run = run;
@@ -121,22 +141,45 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getPypircPath = exports.writePypirc = void 0;
+exports.generatePypirc = exports.writePypirc = exports.getPypircPath = exports.getPypricContents = void 0;
+const context = __importStar(__nccwpck_require__(842));
+const fs = __importStar(__nccwpck_require__(147));
 const path = __importStar(__nccwpck_require__(17));
 const os = __importStar(__nccwpck_require__(37));
-function writePypirc(inputs) {
-    const distutilsIndexServerContents = `[distutils]\nindex-servers=${inputs.distutilsIndexServer}\n`;
-    const repositoryContents = `repository = ${inputs.repository}\n`;
+function getPypricContents(inputs) {
+    const distutilsIndexServer = inputs.distutilsIndexServer
+        ? `${inputs.distutilsIndexServer}`
+        : `pypi`;
+    const repository = inputs.repository ? `${inputs.repository}` : `${context.DEFAULT_REGISTRY}`;
+    const distutilsIndexServerContents = `[distutils]\nindex-servers=${distutilsIndexServer}\n`;
+    const repositoryContents = `repository = ${repository}\n`;
     const usernameContents = inputs.username ? `username = ${inputs.username}\n` : ``;
     const passwordContents = inputs.password ? `password = ${inputs.password}\n` : ``;
-    const pypricContents = `${distutilsIndexServerContents}\n[${inputs.distutilsIndexServer}]\n${repositoryContents}${usernameContents}${passwordContents}`;
-    console.log(pypricContents);
+    const pypricContents = `${distutilsIndexServerContents}\n[${distutilsIndexServer}]\n${repositoryContents}${usernameContents}${passwordContents}`;
+    return pypricContents;
 }
-exports.writePypirc = writePypirc;
+exports.getPypricContents = getPypricContents;
 function getPypircPath() {
     return path.join(os.homedir(), '.pypirc');
 }
 exports.getPypircPath = getPypircPath;
+/**
+ * pypirc配置写入~/.pypirc
+ * @param pypircPath
+ * @param pypircContent
+ */
+function writePypirc(pypircPath, pypircContent) {
+    fs.writeFileSync(pypircPath, pypircContent);
+}
+exports.writePypirc = writePypirc;
+/**
+ * 根据用户输入生成pypirc配置并写入~/.pypirc
+ * @param inputs
+ */
+function generatePypirc(inputs) {
+    writePypirc(getPypircPath(), getPypricContents(inputs));
+}
+exports.generatePypirc = generatePypirc;
 //# sourceMappingURL=pypiConfig.js.map
 
 /***/ }),
