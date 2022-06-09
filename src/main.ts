@@ -18,6 +18,8 @@ export async function run() {
     await twine.installTwine();
 
     pypi.writePypirc(inputs)
+
+    console.log(pypi.getPypircPath());
 }
 
 run().catch(core.setFailed);
