@@ -8,10 +8,16 @@ export interface Inputs {
 }
 
 export function getInputs(): Inputs {
+    // return {
+    //     repository: core.getInput('repository', {required: false}),
+    //     username: core.getInput('username', {required: false}),
+    //     password: core.getInput('password', {required: false}),
+    //     distutilsIndexServer: core.getInput('distutils-index-server', {required: false})
+    // };
     return {
-        repository: core.getInput('repository', {required: false}),
-        username: core.getInput('username', {required: false}),
-        password: core.getInput('password', {required: false}),
-        distutilsIndexServer: core.getInput('distutils-index-server', {required: false})
+        repository: 'https://pypi.org/simple',
+        username: '',
+        password: '',
+        distutilsIndexServer: 'pypi'
     };
 }

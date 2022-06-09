@@ -2,6 +2,7 @@ import * as core from '@actions/core';
 import * as context from './context';
 import * as utils from './utils';
 import * as twine from './twineHelper';
+import * as pypi from './pypiConfig';
 
 export async function run() {
     core.info('Generate configurations for PyPI');
@@ -15,6 +16,8 @@ export async function run() {
 
     // 安装依赖工具twine
     await twine.installTwine();
+
+    pypi.writePypirc(inputs)
 }
 
 run().catch(core.setFailed);
