@@ -6,13 +6,19 @@ describe('test get pypric contents', () => {
     const testCase = [
         {
             description: 'input不传参数',
-            inputs: {pypiOperationType: '', repository: '', username: '', password: '', distutilsIndexServer: ''},
+            inputs: {
+                pypiOperationType: '',
+                repository: '',
+                username: '',
+                password: '',
+                distutilsIndexServer: ''
+            },
             result: `[distutils]\nindex-servers=pypi\n\n[pypi]\nrepository = https://pypi.org/simple\n`
         },
         {
             description: '只传repository',
             inputs: {
-                pypiOperationType: '', 
+                pypiOperationType: '',
                 repository: 'https://repo.huaweicloud.com/repository/pypi/simple',
                 username: '',
                 password: '',
@@ -23,7 +29,7 @@ describe('test get pypric contents', () => {
         {
             description: '传用户名密码',
             inputs: {
-                pypiOperationType: '', 
+                pypiOperationType: '',
                 repository: '',
                 username: 'username',
                 password: 'password',
@@ -56,7 +62,13 @@ describe('test generate pypirc config', () => {
     const testCase = [
         {
             description: '查看是否生成pypirc',
-            inputs: {pypiOperationType: '', repository: '', username: '', password: '', distutilsIndexServer: ''},
+            inputs: {
+                pypiOperationType: '',
+                repository: '',
+                username: '',
+                password: '',
+                distutilsIndexServer: ''
+            },
             result: '[distutils]\nindex-servers=pypi\n\n[pypi]\nrepository = https://pypi.org/simple\n'
         }
     ];

@@ -4,23 +4,41 @@ describe('test check input is valid', () => {
     const testCase = [
         {
             description: 'checkRepository和checkAccountInfo都为true',
-            inputs: {pypiOperationType: '', repository: '', username: '', password: '', distutilsIndexServer: ''},
+            inputs: {
+                pypiOperationType: '',
+                repository: '',
+                username: '',
+                password: '',
+                distutilsIndexServer: ''
+            },
             result: true
         },
         {
             description: 'checkRepository为true checkAccountInfo为false',
-            inputs: {pypiOperationType: '', repository: '', username: '', password: 'password', distutilsIndexServer: ''},
+            inputs: {
+                pypiOperationType: '',
+                repository: '',
+                username: '',
+                password: 'password',
+                distutilsIndexServer: ''
+            },
             result: false
         },
         {
             description: 'checkRepository为false checkAccountInfo为true',
-            inputs: {pypiOperationType: '', repository: 'url', username: '', password: '', distutilsIndexServer: ''},
+            inputs: {
+                pypiOperationType: '',
+                repository: 'url',
+                username: '',
+                password: '',
+                distutilsIndexServer: ''
+            },
             result: false
         },
         {
             description: 'checkRepository和checkAccountInfo都为false',
             inputs: {
-                pypiOperationType: '', 
+                pypiOperationType: '',
                 repository: 'url',
                 username: '',
                 password: 'password',
@@ -60,7 +78,7 @@ describe('test check account info is valid', () => {
         {
             description: '用户名密码都输入',
             inputs: {
-                pypiOperationType: '', 
+                pypiOperationType: '',
                 repository: '',
                 username: 'username',
                 password: 'password',
@@ -70,17 +88,35 @@ describe('test check account info is valid', () => {
         },
         {
             description: '用户名密码都不输入',
-            inputs: {pypiOperationType: '', repository: '', username: '', password: '', distutilsIndexServer: ''},
+            inputs: {
+                pypiOperationType: '',
+                repository: '',
+                username: '',
+                password: '',
+                distutilsIndexServer: ''
+            },
             result: true
         },
         {
             description: '只输入用户名',
-            inputs: {pypiOperationType: '', repository: '', username: 'username', password: '', distutilsIndexServer: ''},
+            inputs: {
+                pypiOperationType: '',
+                repository: '',
+                username: 'username',
+                password: '',
+                distutilsIndexServer: ''
+            },
             result: true
         },
         {
             description: '只输入密码',
-            inputs: {pypiOperationType: '', repository: '', username: '', password: 'password', distutilsIndexServer: ''},
+            inputs: {
+                pypiOperationType: '',
+                repository: '',
+                username: '',
+                password: 'password',
+                distutilsIndexServer: ''
+            },
             result: false
         }
     ];

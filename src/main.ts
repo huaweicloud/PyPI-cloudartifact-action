@@ -20,7 +20,7 @@ export async function run() {
     // 生成.pypirc配置内容
     pypi.generatePypirc(inputs);
 
-    core.info(`Run the following command to publish the Python package to the PyPI repository: twine upload -r ${inputs.distutilsIndexServer} dist/*`);
+    core.info(utils.getPypiTips(inputs));
 }
 
 run().catch(core.setFailed);
