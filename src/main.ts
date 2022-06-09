@@ -13,7 +13,7 @@ export async function run() {
         return;
     }
 
-    const isTwineInstalled = await twine.isTwineAvailable();
+    const isTwineInstalled = await twine.isTwineAvailable('java', ['-version']);
     console.log(`isTiwneInstalled: ${isTwineInstalled}`);
 }
 
