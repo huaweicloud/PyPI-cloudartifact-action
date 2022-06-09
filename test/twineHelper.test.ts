@@ -14,3 +14,7 @@ describe('test tool is available', () => {
         });
     });
 });
+
+test('install twine', async () => {
+    expect(await twine.installTwine()).not.toThrow
+});

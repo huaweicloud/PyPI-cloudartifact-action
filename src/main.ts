@@ -13,8 +13,8 @@ export async function run() {
         return;
     }
 
-    const isTwineInstalled = await twine.isTwineAvailable('java', ['-version']);
-    console.log(`isTiwneInstalled: ${isTwineInstalled}`);
+    // 安装依赖工具twine
+    await twine.installTwine();
 }
 
 run().catch(core.setFailed);

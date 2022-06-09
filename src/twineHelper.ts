@@ -9,7 +9,6 @@ export async function isAvailable(commandLine: string, args?: string[]): Promise
       })
       .then(res => {
         if (res.stderr.length > 0 && res.exitCode != 0) {
-            core.info(res.stderr)
             core.info(`${commandLine} is not installed.`)
             return false;
         }
@@ -17,7 +16,20 @@ export async function isAvailable(commandLine: string, args?: string[]): Promise
       })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .catch(error => {
-            core.info(error)
             return false;
       });
+  }
+
+  /**
+   * 下载安装twine
+   */
+  export async function installTwine() {
+    if (!await isAvailable('twine', ['--version'])) {
+        try {
+            await exec.exec('pip', ['install', 'twine']);
+        } catch (error) {
+            console.log(error);
+            core.setFailed('intsall twine failed');
+        }
+    }
   }
