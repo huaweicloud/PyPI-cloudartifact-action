@@ -4,8 +4,8 @@ import * as path from 'path';
 import * as os from 'os';
 
 export function getPypricContents(inputs: context.Inputs) {
-    const distutilsIndexServer = inputs.distutilsIndexServer
-        ? `${inputs.distutilsIndexServer}`
+    const distutilsIndexServer = inputs.indexServer
+        ? `${inputs.indexServer}`
         : `pypi`;
     const repository = inputs.repository ? `${inputs.repository}` : `${context.DEFAULT_REGISTRY}`;
     const distutilsIndexServerContents = `[distutils]\nindex-servers=${distutilsIndexServer}\n`;

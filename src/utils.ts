@@ -45,5 +45,5 @@ export function checkAccountInfo(inputs: context.Inputs): boolean {
  * @returns string
  */
 export function getPypiTips(inputs: context.Inputs): string {
-    return `Run the following command to publish the Python package to the PyPI repository: twine upload -r ${inputs.distutilsIndexServer} dist/*`;
+    return `Run the following command to publish the Python package to the PyPI repository: twine upload -r ${inputs.indexServer} dist/*`;
 }

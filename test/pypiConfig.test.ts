@@ -8,10 +8,12 @@ describe('test get pypric contents', () => {
             description: 'input不传参数',
             inputs: {
                 pypiOperationType: '',
+                indexUrl: '',
+                trustedHost: '',
                 repository: '',
                 username: '',
                 password: '',
-                distutilsIndexServer: ''
+                indexServer: ''
             },
             result: `[distutils]\nindex-servers=pypi\n\n[pypi]\nrepository = https://pypi.org/simple\n`
         },
@@ -19,10 +21,12 @@ describe('test get pypric contents', () => {
             description: '只传repository',
             inputs: {
                 pypiOperationType: '',
+                indexUrl: '',
+                trustedHost: '',
                 repository: 'https://repo.huaweicloud.com/repository/pypi/simple',
                 username: '',
                 password: '',
-                distutilsIndexServer: ''
+                indexServer: ''
             },
             result: `[distutils]\nindex-servers=pypi\n\n[pypi]\nrepository = https://repo.huaweicloud.com/repository/pypi/simple\n`
         },
@@ -30,10 +34,12 @@ describe('test get pypric contents', () => {
             description: '传用户名密码',
             inputs: {
                 pypiOperationType: '',
+                indexUrl: '',
+                trustedHost: '',
                 repository: '',
                 username: 'username',
                 password: 'password',
-                distutilsIndexServer: ''
+                indexServer: ''
             },
             result: `[distutils]\nindex-servers=pypi\n\n[pypi]\nrepository = https://pypi.org/simple\nusername = username\npassword = password\n`
         }
@@ -64,10 +70,12 @@ describe('test generate pypirc config', () => {
             description: '查看是否生成pypirc',
             inputs: {
                 pypiOperationType: '',
+                indexUrl: '',
+                trustedHost: '',
                 repository: '',
                 username: '',
                 password: '',
-                distutilsIndexServer: ''
+                indexServer: ''
             },
             result: '[distutils]\nindex-servers=pypi\n\n[pypi]\nrepository = https://pypi.org/simple\n'
         }

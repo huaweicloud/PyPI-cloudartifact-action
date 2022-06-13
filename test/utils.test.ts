@@ -6,10 +6,12 @@ describe('test check input is valid', () => {
             description: 'checkRepository和checkAccountInfo都为true',
             inputs: {
                 pypiOperationType: '',
+                indexUrl: '',
+                trustedHost: '',
                 repository: '',
                 username: '',
                 password: '',
-                distutilsIndexServer: ''
+                indexServer: ''
             },
             result: true
         },
@@ -17,10 +19,12 @@ describe('test check input is valid', () => {
             description: 'checkRepository为true checkAccountInfo为false',
             inputs: {
                 pypiOperationType: '',
+                indexUrl: '',
+                trustedHost: '',
                 repository: '',
                 username: '',
                 password: 'password',
-                distutilsIndexServer: ''
+                indexServer: ''
             },
             result: false
         },
@@ -28,10 +32,12 @@ describe('test check input is valid', () => {
             description: 'checkRepository为false checkAccountInfo为true',
             inputs: {
                 pypiOperationType: '',
+                indexUrl: '',
+                trustedHost: '',
                 repository: 'url',
                 username: '',
                 password: '',
-                distutilsIndexServer: ''
+                indexServer: ''
             },
             result: false
         },
@@ -39,10 +45,12 @@ describe('test check input is valid', () => {
             description: 'checkRepository和checkAccountInfo都为false',
             inputs: {
                 pypiOperationType: '',
+                indexUrl: '',
+                trustedHost: '',
                 repository: 'url',
                 username: '',
                 password: 'password',
-                distutilsIndexServer: ''
+                indexServer: ''
             },
             result: false
         }
@@ -79,10 +87,12 @@ describe('test check account info is valid', () => {
             description: '用户名密码都输入',
             inputs: {
                 pypiOperationType: '',
+                indexUrl: '',
+                trustedHost: '',
                 repository: '',
                 username: 'username',
                 password: 'password',
-                distutilsIndexServer: ''
+                indexServer: ''
             },
             result: true
         },
@@ -90,10 +100,12 @@ describe('test check account info is valid', () => {
             description: '用户名密码都不输入',
             inputs: {
                 pypiOperationType: '',
+                indexUrl: '',
+                trustedHost: '',
                 repository: '',
                 username: '',
                 password: '',
-                distutilsIndexServer: ''
+                indexServer: ''
             },
             result: true
         },
@@ -101,10 +113,12 @@ describe('test check account info is valid', () => {
             description: '只输入用户名',
             inputs: {
                 pypiOperationType: '',
+                indexUrl: '',
+                trustedHost: '',
                 repository: '',
                 username: 'username',
                 password: '',
-                distutilsIndexServer: ''
+                indexServer: ''
             },
             result: true
         },
@@ -112,10 +126,12 @@ describe('test check account info is valid', () => {
             description: '只输入密码',
             inputs: {
                 pypiOperationType: '',
+                indexUrl: '',
+                trustedHost: '',
                 repository: '',
                 username: '',
                 password: 'password',
-                distutilsIndexServer: ''
+                indexServer: ''
             },
             result: false
         }
