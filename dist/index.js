@@ -34,6 +34,7 @@ exports.DEFAULT_REGISTRY = exports.getInputs = void 0;
 const core = __importStar(__nccwpck_require__(186));
 function getInputs() {
     return {
+        pypiOperationType: core.getInput('pypi-operation-type', { required: true }),
         repository: core.getInput('repository', { required: false }),
         username: core.getInput('username', { required: false }),
         password: core.getInput('password', { required: false }),
@@ -103,7 +104,7 @@ function run() {
         yield twine.installTwine();
         // 生成.pypirc配置内容
         pypi.generatePypirc(inputs);
-        core.info(`Run the following command to publish the Python package to the PyPI repository: twine upload -r ${inputs.distutilsIndexServer} dist/*`);
+        core.info(utils.getPypiTips(inputs));
     });
 }
 exports.run = run;
@@ -296,7 +297,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.checkAccountInfo = exports.checkRepository = exports.checkInputs = void 0;
+exports.getPypiTips = exports.checkAccountInfo = exports.checkRepository = exports.checkInputs = void 0;
 const core = __importStar(__nccwpck_require__(186));
 /**
  * 检查每个inputs 属性value是否合法
@@ -336,6 +337,15 @@ function checkAccountInfo(inputs) {
     return true;
 }
 exports.checkAccountInfo = checkAccountInfo;
+/**
+ * action页面返回用户上传下载使用命名提示
+ * @param inputs
+ * @returns string
+ */
+function getPypiTips(inputs) {
+    return `Run the following command to publish the Python package to the PyPI repository: twine upload -r ${inputs.distutilsIndexServer} dist/*`;
+}
+exports.getPypiTips = getPypiTips;
 //# sourceMappingURL=utils.js.map
 
 /***/ }),

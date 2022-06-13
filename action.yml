@@ -6,18 +6,26 @@ inputs:
     description: 'install or upload. install: to install PyPI package from the repository; upload: publish PyPI package to the repository'
     required: true
     default: 'install'
+  index-url:
+    description: 'the index-url of pip config file'
+    required: false
+    default: 'https://pypi.org/simple'
+  trusted-host:
+    description: 'the trusted-host of pip config file'
+    required: false
+    default: 'pypi.org'
   repository:
-    description: 'The URL of the PyPI repository.'
+    description: 'The URL of the PyPI repository in the .pypirc file.'
     required: false
     default: 'https://pypi.org/simple'
   username:
-    description: 'The registered username on the repository.'
+    description: 'The registered username on the repository in the .pypirc file.'
     required: false
   password:
-    description: 'The password that will used to authenticate the username.'
+    description: 'The password that will used to authenticate the username in the .pypirc file.'
     required: false
-  distutils-index-server:
-    description: 'The name of the section describing a repository.'
+  index-server:
+    description: 'The name of the section describing a repository in the .pypirc file.'
     required: false
     default: 'pypi'
 branding:
