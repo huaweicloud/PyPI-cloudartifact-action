@@ -7,19 +7,62 @@ import * as context from './context';
  * @returns
  */
 export function checkInputs(inputs: context.Inputs): boolean {
-    return checkRepository(inputs.repository) && checkAccountInfo(inputs);
+    if (inputs.pypiOperationType === 'install') {
+        return checkInstallInput(inputs);
+    }
+
+    if (inputs.pypiOperationType === 'upload') {
+        return checkUploadInput(inputs);
+    }
+
+    core.setFailed('The pypi-operation-type value can only be install or upload');
+    return false;
+}
+
+/**
+ * pypiOperationType为install时，检查参数是否合法
+ * @param inputs
+ * @returns boolean
+ */
+export function checkInstallInput(inputs: context.Inputs): boolean {
+    if (!checkRepositoryUrl(inputs.indexUrl)) {
+        core.setFailed('index-url is not correct.It must start with `https://` or `http://`');
+        return false;
+    }
+    if (inputs.indexUrl && inputs.trustedHost) {
+        if (!inputs.indexUrl.includes(inputs.trustedHost)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * pypiOperationType为upload时，检查参数是否合法
+ * @param inputs
+ * @returns boolean
+ */
+export function checkUploadInput(inputs: context.Inputs): boolean {
+    if (!checkRepositoryUrl(inputs.repository)) {
+        core.setFailed('repository is not correct.It must start with `https://` or `http://`');
+        return false;
+    }
+    if (!checkAccountInfo(inputs)) {
+        return false;
+    }
+    return true;
 }
 
 /**
  * repository参数以`https://` 或 `http://开头
- * @param repository
+ * @param repositoryUrl
  * @returns boolean
  */
-export function checkRepository(repository: string): boolean {
-    if (repository) {
+export function checkRepositoryUrl(repositoryUrl: string): boolean {
+    if (repositoryUrl) {
         const repositoryReg = new RegExp(/^https:\/\/.+|^http:\/\/.+/);
-        if (!repositoryReg.test(repository)) {
-            core.info('repository is not correct.It must start with `https://` or `http://`');
+        if (!repositoryReg.test(repositoryUrl)) {
+            core.info('repository url is not correct.It must start with `https://` or `http://`');
             return false;
         }
     }
@@ -32,11 +75,11 @@ export function checkRepository(repository: string): boolean {
  * @returns boolean
  */
 export function checkAccountInfo(inputs: context.Inputs): boolean {
-    if (inputs.password && !inputs.username) {
-        core.info('The username must exist when the password exists.');
-        return false;
+    if ((inputs.password && inputs.username) || (!inputs.password && !inputs.username)) {
+        return true;
     }
-    return true;
+    core.info('Both username and password exist.');
+    return false;
 }
 
 /**
@@ -45,5 +88,7 @@ export function checkAccountInfo(inputs: context.Inputs): boolean {
  * @returns string
  */
 export function getPypiTips(inputs: context.Inputs): string {
-    return `Run the following command to publish the Python package to the PyPI repository: twine upload -r ${inputs.indexServer} dist/*`;
+    return inputs.pypiOperationType === 'upload'
+        ? `Run the following command to publish the Python package to the PyPI repository: twine upload -r ${inputs.indexServer} dist/*`
+        : 'Run the following command to install the PyPI package: pip install <PyPI name>';
 }
