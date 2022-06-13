@@ -35,10 +35,12 @@ const core = __importStar(__nccwpck_require__(186));
 function getInputs() {
     return {
         pypiOperationType: core.getInput('pypi-operation-type', { required: true }),
+        indexUrl: core.getInput('index-url', { required: false }),
+        trustedHost: core.getInput('trusted-host', { required: false }),
         repository: core.getInput('repository', { required: false }),
         username: core.getInput('username', { required: false }),
         password: core.getInput('password', { required: false }),
-        distutilsIndexServer: core.getInput('distutils-index-server', { required: false })
+        indexServer: core.getInput('index-server', { required: false })
     };
 }
 exports.getInputs = getInputs;
@@ -148,9 +150,7 @@ const fs = __importStar(__nccwpck_require__(147));
 const path = __importStar(__nccwpck_require__(17));
 const os = __importStar(__nccwpck_require__(37));
 function getPypricContents(inputs) {
-    const distutilsIndexServer = inputs.distutilsIndexServer
-        ? `${inputs.distutilsIndexServer}`
-        : `pypi`;
+    const distutilsIndexServer = inputs.indexServer ? `${inputs.indexServer}` : `pypi`;
     const repository = inputs.repository ? `${inputs.repository}` : `${context.DEFAULT_REGISTRY}`;
     const distutilsIndexServerContents = `[distutils]\nindex-servers=${distutilsIndexServer}\n`;
     const repositoryContents = `repository = ${repository}\n`;
@@ -297,7 +297,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getPypiTips = exports.checkAccountInfo = exports.checkRepository = exports.checkInputs = void 0;
+exports.getPypiTips = exports.checkAccountInfo = exports.checkRepositoryUrl = exports.checkUploadInput = exports.checkInstallInput = exports.checkInputs = void 0;
 const core = __importStar(__nccwpck_require__(186));
 /**
  * 检查每个inputs 属性value是否合法
@@ -305,36 +305,77 @@ const core = __importStar(__nccwpck_require__(186));
  * @returns
  */
 function checkInputs(inputs) {
-    return checkRepository(inputs.repository) && checkAccountInfo(inputs);
+    if (inputs.pypiOperationType === 'install') {
+        return checkInstallInput(inputs);
+    }
+    if (inputs.pypiOperationType === 'upload') {
+        return checkUploadInput(inputs);
+    }
+    core.setFailed('The pypi-operation-type value can only be install or upload');
+    return false;
 }
 exports.checkInputs = checkInputs;
 /**
- * repository参数以`https://` 或 `http://开头
- * @param repository
+ * pypiOperationType为install时，检查参数是否合法
+ * @param inputs
  * @returns boolean
  */
-function checkRepository(repository) {
-    if (repository) {
-        const repositoryReg = new RegExp(/^https:\/\/.+|^http:\/\/.+/);
-        if (!repositoryReg.test(repository)) {
-            core.info('repository is not correct.It must start with `https://` or `http://`');
+function checkInstallInput(inputs) {
+    if (!checkRepositoryUrl(inputs.indexUrl)) {
+        core.setFailed('index-url is not correct.It must start with `https://` or `http://`');
+        return false;
+    }
+    if (inputs.indexUrl && inputs.trustedHost) {
+        if (!inputs.indexUrl.includes(inputs.trustedHost)) {
             return false;
         }
     }
     return true;
 }
-exports.checkRepository = checkRepository;
+exports.checkInstallInput = checkInstallInput;
+/**
+ * pypiOperationType为upload时，检查参数是否合法
+ * @param inputs
+ * @returns boolean
+ */
+function checkUploadInput(inputs) {
+    if (!checkRepositoryUrl(inputs.repository)) {
+        core.setFailed('repository is not correct.It must start with `https://` or `http://`');
+        return false;
+    }
+    if (!checkAccountInfo(inputs)) {
+        return false;
+    }
+    return true;
+}
+exports.checkUploadInput = checkUploadInput;
+/**
+ * repository参数以`https://` 或 `http://开头
+ * @param repositoryUrl
+ * @returns boolean
+ */
+function checkRepositoryUrl(repositoryUrl) {
+    if (repositoryUrl) {
+        const repositoryReg = new RegExp(/^https:\/\/.+|^http:\/\/.+/);
+        if (!repositoryReg.test(repositoryUrl)) {
+            core.info('repository url is not correct.It must start with `https://` or `http://`');
+            return false;
+        }
+    }
+    return true;
+}
+exports.checkRepositoryUrl = checkRepositoryUrl;
 /**
  * 密码存在的时候用户名必须存在
  * @param inputs
  * @returns boolean
  */
 function checkAccountInfo(inputs) {
-    if (inputs.password && !inputs.username) {
-        core.info('The username must exist when the password exists.');
-        return false;
+    if ((inputs.password && inputs.username) || (!inputs.password && !inputs.username)) {
+        return true;
     }
-    return true;
+    core.info('Both username and password exist.');
+    return false;
 }
 exports.checkAccountInfo = checkAccountInfo;
 /**
@@ -343,7 +384,9 @@ exports.checkAccountInfo = checkAccountInfo;
  * @returns string
  */
 function getPypiTips(inputs) {
-    return `Run the following command to publish the Python package to the PyPI repository: twine upload -r ${inputs.distutilsIndexServer} dist/*`;
+    return inputs.pypiOperationType === 'upload'
+        ? `Run the following command to publish the Python package to the PyPI repository: twine upload -r ${inputs.indexServer} dist/*`
+        : 'Run the following command to install the PyPI package: pip install <PyPI name>';
 }
 exports.getPypiTips = getPypiTips;
 //# sourceMappingURL=utils.js.map
