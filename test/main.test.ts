@@ -11,19 +11,23 @@ jest.mock('../src/twineHelper');
 jest.mock('../src/pypirc');
 jest.mock('../src/pip');
 
+function getInputs(pypiOperationType: string, indexUrl: string, trustedHost: string, repository: string, username: string, password: string, indexServer: string) {
+    return {
+        pypiOperationType: pypiOperationType,
+        indexUrl: indexUrl,
+        trustedHost: trustedHost,
+        repository: repository,
+        username: username,
+        password: password,
+        indexServer: indexServer
+    };
+}
+
 test('mock checkInputs return true and pypiOperationType is install', async () => {
     jest.spyOn(utils, 'checkInputs').mockReturnValue(true);
-    jest.spyOn(context, 'getInputs').mockReturnValue({
-        pypiOperationType: 'install',
-        indexUrl: '',
-        trustedHost: '',
-        repository: '',
-        username: '',
-        password: '',
-        indexServer: ''
-    });
+    jest.spyOn(context, 'getInputs').mockReturnValue(getInputs('install', '', '', '', '', '', ''));
     jest.spyOn(utils, 'getPypiTips').mockReturnValue(
-        'Run the following command to publish the Python package to the PyPI repository: twine upload -r pypi dist/*'
+        'Run the following command to install the PyPI package: pip install <PyPI name>'
     );
     await main.run();
 
@@ -32,25 +36,19 @@ test('mock checkInputs return true and pypiOperationType is install', async () =
 
     expect(utils.checkInputs).toHaveBeenCalled();
     expect(utils.checkInputs).toHaveBeenCalledTimes(1);
+
+    expect(pip.generatePipConfig).toHaveBeenCalled();
 
     expect(twine.installTwine).not.toHaveBeenCalled();
 
     expect(pypi.generatePypirc).not.toHaveBeenCalled();
 
-    expect(pip.generatePipConfig).toHaveBeenCalled();
+    
 });
 
 test('mock checkInputs return true and pypiOperationType is upload', async () => {
     jest.spyOn(utils, 'checkInputs').mockReturnValue(true);
-    jest.spyOn(context, 'getInputs').mockReturnValue({
-        pypiOperationType: 'upload',
-        indexUrl: '',
-        trustedHost: '',
-        repository: '',
-        username: '',
-        password: '',
-        indexServer: ''
-    });
+    jest.spyOn(context, 'getInputs').mockReturnValue(getInputs('upload', '', '', '', '', '', ''));
     jest.spyOn(utils, 'getPypiTips').mockReturnValue(
         'Run the following command to publish the Python package to the PyPI repository: twine upload -r pypi dist/*'
     );
@@ -62,11 +60,13 @@ test('mock checkInputs return true and pypiOperationType is upload', async () =>
     expect(utils.checkInputs).toHaveBeenCalled();
     expect(utils.checkInputs).toHaveBeenCalledTimes(1);
 
+    expect(pip.generatePipConfig).not.toHaveBeenCalled();
+
     expect(twine.installTwine).toHaveBeenCalled();
 
     expect(pypi.generatePypirc).toHaveBeenCalled();
 
-    expect(pip.generatePipConfig).not.toHaveBeenCalled();
+    
 });
 
 test('mock checkInputs return false', async () => {
