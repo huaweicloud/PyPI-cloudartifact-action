@@ -3,6 +3,7 @@ import * as context from './context';
 import * as utils from './utils';
 import * as twine from './twineHelper';
 import * as pypi from './pypirc';
+import * as pip from './pip';
 
 export async function run() {
     core.info('Generate configurations for PyPI');
@@ -14,11 +15,24 @@ export async function run() {
         return;
     }
 
-    // 安装依赖工具twine
-    await twine.installTwine();
+    if (inputs.pypiOperationType === 'upload') {
+        core.info('Generate pypirc configurations for uploading PyPI packages.');
 
-    // 生成.pypirc配置内容
-    pypi.generatePypirc(inputs);
+        // 安装依赖工具twine
+        await twine.installTwine();
+
+        // 生成.pypirc配置内容
+        pypi.generatePypirc(inputs);
+
+        return;
+    }
+
+    if (inputs.pypiOperationType === 'install') {
+        core.info('Generate pip configurations for downloading PyPI packages.');
+
+        // 生成pip配置内容
+        pip.generatePipConfig(inputs);
+    }
 
     core.info(utils.getPypiTips(inputs));
 }

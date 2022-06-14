@@ -24,13 +24,13 @@ export function getPipPath(platform: string): string {
     }
 }
 
-export function writePipConfig(pipCobfigPath: string, pipConfigContent: string) {
+export function writePipConfig(pipConfigPath: string, pipConfigContent: string) {
     // 不存在(.pip/pip)目录即创建
-    if (!fs.existsSync(path.dirname(pipCobfigPath))) {
-        core.info(`Pip Config Path:${pipCobfigPath} does not exist.`);
-        fs.mkdirSync(path.dirname(pipCobfigPath));
+    if (!fs.existsSync(path.dirname(pipConfigPath))) {
+        core.info(`Pip Config Path:${pipConfigPath} does not exist.`);
+        fs.mkdirSync(path.dirname(pipConfigPath));
     }
-    fs.writeFileSync(pipCobfigPath, pipConfigContent);
+    fs.writeFileSync(pipConfigPath, pipConfigContent);
 }
 
 /**
