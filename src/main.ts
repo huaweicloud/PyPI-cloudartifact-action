@@ -2,7 +2,7 @@ import * as core from '@actions/core';
 import * as context from './context';
 import * as utils from './utils';
 import * as twine from './twineHelper';
-import * as pypi from './pypiConfig';
+import * as pypi from './pypirc';
 
 export async function run() {
     core.info('Generate configurations for PyPI');
