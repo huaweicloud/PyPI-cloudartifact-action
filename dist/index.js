@@ -92,7 +92,7 @@ const core = __importStar(__nccwpck_require__(186));
 const context = __importStar(__nccwpck_require__(842));
 const utils = __importStar(__nccwpck_require__(918));
 const twine = __importStar(__nccwpck_require__(721));
-const pypi = __importStar(__nccwpck_require__(202));
+const pypi = __importStar(__nccwpck_require__(192));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         core.info('Generate configurations for PyPI');
@@ -115,7 +115,7 @@ run().catch(core.setFailed);
 
 /***/ }),
 
-/***/ 202:
+/***/ 192:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -181,7 +181,7 @@ function generatePypirc(inputs) {
     writePypirc(getPypircPath(), getPypricContents(inputs));
 }
 exports.generatePypirc = generatePypirc;
-//# sourceMappingURL=pypiConfig.js.map
+//# sourceMappingURL=pypirc.js.map
 
 /***/ }),
 
