@@ -2,12 +2,12 @@ import * as main from '../src/main';
 import * as utils from '../src/utils';
 import * as context from '../src/context';
 import * as twine from '../src/twineHelper';
-import * as pypi from '../src/pypiConfig';
+import * as pypi from '../src/pypirc';
 
 jest.mock('../src/utils');
 jest.mock('../src/context');
 jest.mock('../src/twineHelper');
-jest.mock('../src/pypiConfig');
+jest.mock('../src/pypirc');
 
 test('mock checkInputs return true', async () => {
     jest.spyOn(utils, 'checkInputs').mockReturnValue(true);
