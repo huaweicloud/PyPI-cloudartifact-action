@@ -12,16 +12,17 @@ test('test getPipContents', async () => {
         username: '',
         password: '',
         indexServer: ''
-    }
-    expect(pip.getPipContents(inputs)).toBe('[global]\nindex-url = https://pypi.org/simple\ntrusted-host = pypi.org');
+    };
+    expect(pip.getPipContents(inputs)).toBe(
+        '[global]\nindex-url = https://pypi.org/simple\ntrusted-host = pypi.org'
+    );
 });
-
 
 describe('test normal getPipPath', () => {
     const testCase = [
         {platform: 'linux', result: 'pip.conf'},
         {platform: 'darwin', result: 'pip.conf'},
-        {platform: 'win32', result: 'pip.ini'},
+        {platform: 'win32', result: 'pip.ini'}
     ];
     testCase.forEach(item => {
         const {platform, result} = item;
@@ -34,12 +35,14 @@ describe('test normal getPipPath', () => {
 describe('test abnormal getPipPath', () => {
     const testCase = [
         {platform: 'freebsd', result: 'pip.conf'},
-        {platform: 'test', result: 'pip.conf'},
+        {platform: 'test', result: 'pip.conf'}
     ];
     testCase.forEach(item => {
         const {platform, result} = item;
         test(`platform输入为(${platform}),抛出异常`, async () => {
-            expect(() => pip.getPipPath(platform)).toThrow('The pip supports only Linux, Darwin and Windows platforms.');
+            expect(() => pip.getPipPath(platform)).toThrow(
+                'The pip supports only Linux, Darwin and Windows platforms.'
+            );
         });
     });
 });
@@ -58,7 +61,7 @@ describe('test generatePipConfig', () => {
                 indexServer: ''
             },
             result: '[global]\nindex-url = https://pypi.org/simple\ntrusted-host = pypi.org'
-        },
+        }
     ];
     const configPath = pip.getPipPath(os.platform());
     const tmpPath = './test/pipini-' + uuidv4();
@@ -79,7 +82,6 @@ describe('test generatePipConfig', () => {
     });
 });
 
-
 describe('test writePipConfig function', () => {
     test('test write pipConfigContent into pipConfigPath', async () => {
         const pipConfigContent = 'hello';
@@ -88,35 +90,33 @@ describe('test writePipConfig function', () => {
         expect(fs.readFileSync(pipConfigPath, 'utf-8')).toBe(pipConfigContent);
         fs.unlinkSync(pipConfigPath);
     });
-    
+
     test('test writePipConfig mock existsSync return true ', async () => {
         jest.spyOn(fs, 'existsSync').mockReturnValue(true);
         jest.spyOn(fs, 'mkdirSync').mockImplementation(() => '');
         jest.spyOn(fs, 'writeFileSync').mockImplementation(() => '');
-        pip.writePipConfig('', '')
+        pip.writePipConfig('', '');
         expect(fs.existsSync).toHaveBeenCalled();
         expect(fs.existsSync).toHaveBeenCalledTimes(1);
-    
+
         expect(fs.mkdirSync).not.toHaveBeenCalled();
-    
+
         expect(fs.writeFileSync).toHaveBeenCalled();
         expect(fs.writeFileSync).toHaveBeenCalledTimes(1);
-    
     });
-    
+
     test('test writePipConfig mock existsSync return false ', async () => {
         jest.spyOn(fs, 'existsSync').mockReturnValue(false);
         jest.spyOn(fs, 'mkdirSync').mockImplementation(() => '');
         jest.spyOn(fs, 'writeFileSync').mockImplementation(() => '');
-        pip.writePipConfig('', '')
+        pip.writePipConfig('', '');
         expect(fs.existsSync).toHaveBeenCalled();
         expect(fs.existsSync).toHaveBeenCalledTimes(1);
-    
+
         expect(fs.mkdirSync).toHaveBeenCalled();
         expect(fs.mkdirSync).toHaveBeenCalledTimes(1);
-    
+
         expect(fs.writeFileSync).toHaveBeenCalled();
         expect(fs.writeFileSync).toHaveBeenCalledTimes(1);
-    
     });
 });

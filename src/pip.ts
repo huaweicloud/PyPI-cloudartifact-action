@@ -20,17 +20,15 @@ export function getPipPath(platform: string): string {
         case 'win32':
             return path.join(os.homedir(), 'pip', 'pip.ini');
         default:
-          throw new Error(
-            'The pip supports only Linux, Darwin and Windows platforms.'
-          );
-      }
-  }
+            throw new Error('The pip supports only Linux, Darwin and Windows platforms.');
+    }
+}
 
-export function writePipConfig(pipCobfigPath: string, pipConfigContent: string ) {
+export function writePipConfig(pipCobfigPath: string, pipConfigContent: string) {
     // 不存在(.pip/pip)目录即创建
     if (!fs.existsSync(path.dirname(pipCobfigPath))) {
-      core.info(`Pip Config Path:${pipCobfigPath} does not exist.`);
-      fs.mkdirSync(path.dirname(pipCobfigPath));
+        core.info(`Pip Config Path:${pipCobfigPath} does not exist.`);
+        fs.mkdirSync(path.dirname(pipCobfigPath));
     }
     fs.writeFileSync(pipCobfigPath, pipConfigContent);
 }
@@ -40,8 +38,7 @@ export function writePipConfig(pipCobfigPath: string, pipConfigContent: string )
  * @param inputs
  */
 export function generatePipConfig(inputs: context.Inputs) {
-  const platform = os.platform();
-  core.info('The current platform is: ' + platform);
-  writePipConfig(getPipPath(platform), getPipContents(inputs));
+    const platform = os.platform();
+    core.info('The current platform is: ' + platform);
+    writePipConfig(getPipPath(platform), getPipContents(inputs));
 }
-  
