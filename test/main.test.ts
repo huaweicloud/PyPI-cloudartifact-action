@@ -47,7 +47,7 @@ test('mock checkInputs return true and pypiOperationType is install', async () =
 
     expect(pip.generatePipConfig).toHaveBeenCalled();
 
-    expect(tools.installPythonTool).toHaveBeenCalled();
+    expect(tools.installPythonTool).not.toHaveBeenCalled();
 
     expect(pypi.generatePypirc).not.toHaveBeenCalled();
 });

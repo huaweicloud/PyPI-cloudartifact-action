@@ -30,7 +30,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.TOOLS_ARRAY = exports.DEFAULT_REGISTRY = exports.getInputs = void 0;
+exports.DEFAULT_REGISTRY = exports.getInputs = void 0;
 const core = __importStar(__nccwpck_require__(186));
 function getInputs() {
     return {
@@ -40,25 +40,11 @@ function getInputs() {
         repository: core.getInput('repository', { required: false }),
         username: core.getInput('username', { required: false }),
         password: core.getInput('password', { required: false }),
-        indexServer: core.getInput('index-server', { required: false }),
-        tools: core.getInput('tools', { required: false })
+        indexServer: core.getInput('index-server', { required: false })
     };
 }
 exports.getInputs = getInputs;
 exports.DEFAULT_REGISTRY = 'https://pypi.org/simple';
-/**
- * 目前支持安装的python依赖工具：
- * twine: Python打包上传工具
- * build: Python构建工具
- * setuptools: Python构建工具
- * wheel: Python构建工具
- */
-exports.TOOLS_ARRAY = [
-    'twine',
-    'build',
-    'setuptools',
-    'wheel'
-];
 //# sourceMappingURL=context.js.map
 
 /***/ }),
@@ -105,7 +91,7 @@ exports.run = void 0;
 const core = __importStar(__nccwpck_require__(186));
 const context = __importStar(__nccwpck_require__(842));
 const utils = __importStar(__nccwpck_require__(918));
-const twine = __importStar(__nccwpck_require__(721));
+const tool = __importStar(__nccwpck_require__(571));
 const pypi = __importStar(__nccwpck_require__(192));
 const pip = __importStar(__nccwpck_require__(121));
 function run() {
@@ -120,7 +106,9 @@ function run() {
         if (inputs.pypiOperationType === 'upload') {
             core.info('Generate pypirc configurations for uploading PyPI packages.');
             // 安装依赖工具twine
-            yield twine.installTwine();
+            yield tool.installPythonTool('twine');
+            // 安装依赖工具build
+            yield tool.installPythonTool('build');
             // 生成.pypirc配置内容
             pypi.generatePypirc(inputs);
             return;
@@ -286,7 +274,7 @@ exports.generatePypirc = generatePypirc;
 
 /***/ }),
 
-/***/ 721:
+/***/ 571:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -324,48 +312,34 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.installTwine = exports.isAvailable = void 0;
+exports.installPythonTool = exports.execCommand = void 0;
 const core = __importStar(__nccwpck_require__(186));
 const exec = __importStar(__nccwpck_require__(514));
-function isAvailable(commandLine, args) {
+function execCommand(commandLine, args) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield exec
-            .getExecOutput(commandLine, args, {
-            ignoreReturnCode: true,
-            silent: true
-        })
-            .then(res => {
-            if (res.stderr.length > 0 && res.exitCode != 0) {
-                core.info(`${commandLine} is not installed.`);
-                return false;
-            }
-            return res.exitCode == 0;
-        })
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            .catch(error => {
-            return false;
-        });
+        yield exec.exec(commandLine, args);
+        core.info('exec command successfully.');
+        return true;
     });
 }
-exports.isAvailable = isAvailable;
+exports.execCommand = execCommand;
 /**
- * 下载安装twine
+ * 下载安装python tool
+ * @param tool
  */
-function installTwine() {
+function installPythonTool(tool) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!(yield isAvailable('twine', ['--version']))) {
-            try {
-                yield exec.exec('pip', ['install', 'twine']);
-            }
-            catch (error) {
-                console.log(error);
-                core.setFailed('intsall twine failed');
-            }
+        if (yield execCommand('pip', ['install', '--upgrade', tool])) {
+            core.info(`The ${tool} is installed successfully.`);
         }
+        if (yield execCommand('python', ['-m', tool, '--version'])) {
+            core.info(`Checking ${tool} Installation: true`);
+        }
+        return true;
     });
 }
-exports.installTwine = installTwine;
-//# sourceMappingURL=twineHelper.js.map
+exports.installPythonTool = installPythonTool;
+//# sourceMappingURL=toolsHelper.js.map
 
 /***/ }),
 
@@ -398,19 +372,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getPypiTips = exports.checkAccountInfo = exports.checkRepositoryUrl = exports.checkUploadInput = exports.checkInstallInput = exports.checkPythonTools = exports.checkInputs = void 0;
+exports.getPypiTips = exports.checkAccountInfo = exports.checkRepositoryUrl = exports.checkUploadInput = exports.checkInstallInput = exports.checkInputs = void 0;
 const core = __importStar(__nccwpck_require__(186));
-const context = __importStar(__nccwpck_require__(842));
 /**
  * 检查每个inputs 属性value是否合法
  * @param inputs
  * @returns
  */
 function checkInputs(inputs) {
-    if (!checkPythonTools(inputs.trustedHost)) {
-        core.setFailed('The tools supports: twine,build,setuptools,wheel.');
-        return false;
-    }
     if (inputs.pypiOperationType === 'install') {
         return checkInstallInput(inputs);
     }
@@ -421,19 +390,6 @@ function checkInputs(inputs) {
     return false;
 }
 exports.checkInputs = checkInputs;
-function checkPythonTools(tools) {
-    if (tools) {
-        const toolsArray = tools.split(',');
-        for (let i = 0; i < toolsArray.length; i++) {
-            if (!context.TOOLS_ARRAY.includes(toolsArray[i])) {
-                core.setFailed('The tools supports: twine,build,setuptools,wheel.');
-                return false;
-            }
-        }
-    }
-    return true;
-}
-exports.checkPythonTools = checkPythonTools;
 /**
  * pypiOperationType为install时，检查参数是否合法
  * @param inputs
