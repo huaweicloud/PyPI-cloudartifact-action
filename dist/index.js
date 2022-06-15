@@ -30,7 +30,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.DEFAULT_REGISTRY = exports.getInputs = void 0;
+exports.TOOLS_ARRAY = exports.DEFAULT_REGISTRY = exports.getInputs = void 0;
 const core = __importStar(__nccwpck_require__(186));
 function getInputs() {
     return {
@@ -40,11 +40,25 @@ function getInputs() {
         repository: core.getInput('repository', { required: false }),
         username: core.getInput('username', { required: false }),
         password: core.getInput('password', { required: false }),
-        indexServer: core.getInput('index-server', { required: false })
+        indexServer: core.getInput('index-server', { required: false }),
+        tools: core.getInput('tools', { required: false })
     };
 }
 exports.getInputs = getInputs;
 exports.DEFAULT_REGISTRY = 'https://pypi.org/simple';
+/**
+ * 目前支持安装的python依赖工具：
+ * twine: Python打包上传工具
+ * build: Python构建工具
+ * setuptools: Python构建工具
+ * wheel: Python构建工具
+ */
+exports.TOOLS_ARRAY = [
+    'twine',
+    'build',
+    'setuptools',
+    'wheel'
+];
 //# sourceMappingURL=context.js.map
 
 /***/ }),
@@ -384,14 +398,19 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getPypiTips = exports.checkAccountInfo = exports.checkRepositoryUrl = exports.checkUploadInput = exports.checkInstallInput = exports.checkInputs = void 0;
+exports.getPypiTips = exports.checkAccountInfo = exports.checkRepositoryUrl = exports.checkUploadInput = exports.checkInstallInput = exports.checkPythonTools = exports.checkInputs = void 0;
 const core = __importStar(__nccwpck_require__(186));
+const context = __importStar(__nccwpck_require__(842));
 /**
  * 检查每个inputs 属性value是否合法
  * @param inputs
  * @returns
  */
 function checkInputs(inputs) {
+    if (!checkPythonTools(inputs.trustedHost)) {
+        core.setFailed('The tools supports: twine,build,setuptools,wheel.');
+        return false;
+    }
     if (inputs.pypiOperationType === 'install') {
         return checkInstallInput(inputs);
     }
@@ -402,6 +421,19 @@ function checkInputs(inputs) {
     return false;
 }
 exports.checkInputs = checkInputs;
+function checkPythonTools(tools) {
+    if (tools) {
+        const toolsArray = tools.split(',');
+        for (let i = 0; i < toolsArray.length; i++) {
+            if (!context.TOOLS_ARRAY.includes(toolsArray[i])) {
+                core.setFailed('The tools supports: twine,build,setuptools,wheel.');
+                return false;
+            }
+        }
+    }
+    return true;
+}
+exports.checkPythonTools = checkPythonTools;
 /**
  * pypiOperationType为install时，检查参数是否合法
  * @param inputs
