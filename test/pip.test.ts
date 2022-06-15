@@ -11,7 +11,8 @@ test('test getPipContents', async () => {
         repository: '',
         username: '',
         password: '',
-        indexServer: ''
+        indexServer: '',
+        tools: ''
     };
     expect(pip.getPipContents(inputs)).toBe(
         '[global]\nindex-url = https://pypi.org/simple\ntrusted-host = pypi.org'
@@ -58,7 +59,8 @@ describe('test generatePipConfig', () => {
                 repository: '',
                 username: '',
                 password: '',
-                indexServer: ''
+                indexServer: '',
+                tools: ''
             },
             result: '[global]\nindex-url = https://pypi.org/simple\ntrusted-host = pypi.org'
         }

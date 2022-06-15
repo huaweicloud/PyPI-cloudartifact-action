@@ -1,6 +1,6 @@
 import * as utils from '../src/utils';
 
-function getInputs(pypiOperationType: string, indexUrl: string, trustedHost: string, repository: string, username: string, password: string, indexServer: string) {
+function getInputs(pypiOperationType: string, indexUrl: string, trustedHost: string, repository: string, username: string, password: string, indexServer: string, tools: string) {
     return {
         pypiOperationType: pypiOperationType,
         indexUrl: indexUrl,
@@ -8,35 +8,46 @@ function getInputs(pypiOperationType: string, indexUrl: string, trustedHost: str
         repository: repository,
         username: username,
         password: password,
-        indexServer: indexServer
+        indexServer: indexServer,
+        tools: tools
     };
 }
 
 describe('test check input is valid', () => {
     const testCase = [
         {
+            description: 'tools不合法',
+            inputs: getInputs('ddddd', '', '', '', '', '', '', 'test'),
+            result: false
+        },
+        {
+            description: 'tools合法',
+            inputs: getInputs('install', '', '', '', '', '', '', ''),
+            result: true
+        },
+        {
             description: 'pypiOperationType!=install也!=upload',
-            inputs: getInputs('ddddd', '', '', '', '', '', ''),
+            inputs: getInputs('ddddd', '', '', '', '', '', '', ''),
             result: false
         },
         {
             description: 'pypiOperationType=install checkInstallInput为true',
-            inputs: getInputs('install', '', '', '', '', '', ''),
+            inputs: getInputs('install', '', '', '', '', '', '', ''),
             result: true
         },
         {
             description: 'pypiOperationType=install checkInstallInput为false',
-            inputs: getInputs('install', 'https://pypi.org/simple', 'pypi.org1', '', '', '', ''),
+            inputs: getInputs('install', 'https://pypi.org/simple', 'pypi.org1', '', '', '', '', ''),
             result: false
         },
         {
             description: 'pypiOperationType=upload checkUploadInput为true',
-            inputs: getInputs('upload', '', '', '', '', '', ''),
+            inputs: getInputs('upload', '', '', '', '', '', '', ''),
             result: true
         },
         {
             description: 'pypiOperationType=upload checkUploadInput为false',
-            inputs: getInputs('upload', '', '', 'pypi.org', '', '', ''),
+            inputs: getInputs('upload', '', '', 'pypi.org', '', '', '', ''),
             result: false
         }
     ];
@@ -48,21 +59,38 @@ describe('test check input is valid', () => {
     });
 });
 
+
+describe('test checkPythonTools is valid', () => {
+    const testCase = [
+        {tools: '', result: true},
+        {tools: 'twine', result: true},
+        {tools: 'twine,build,setuptools,wheel', result: true},
+        {tools: 'test', result: false},
+        {tools: 'twine build setuptools wheel', result: false},
+    ];
+    testCase.forEach(item => {
+        const {tools, result} = item;
+        test(`tools输入为(${tools}),判断结果：${result}`, async () => {
+            expect(utils.checkPythonTools(tools)).toBe(result);
+        });
+    });
+});
+
 describe('test InstallInput is valid', () => {
     const testCase = [
         {
             description: 'indexUrl不以http获取https开头',
-            inputs: getInputs('install', 'dddd', '', '', '', '', ''),
+            inputs: getInputs('install', 'dddd', '', '', '', '', '', ''),
             result: false
         },
         {
             description: 'indexUrl不包含trustedHost',
-            inputs: getInputs('install', 'https://pypi.org/simple', 'pypi.org1', '', '', '', ''),
+            inputs: getInputs('install', 'https://pypi.org/simple', 'pypi.org1', '', '', '', '', ''),
             result: false
         },
         {
             description: 'indexUrl包含trustedHost',
-            inputs: getInputs('install', 'https://pypi.org/simple', 'pypi.org', '', '', '', ''),
+            inputs: getInputs('install', 'https://pypi.org/simple', 'pypi.org', '', '', '', '', ''),
             result: true
         }
     ];
@@ -78,22 +106,22 @@ describe('test UploadInput is valid', () => {
     const testCase = [
         {
             description: 'checkRepositoryUrl返回为true',
-            inputs: getInputs('upload', '', '', '', '', '', ''),
+            inputs: getInputs('upload', '', '', '', '', '', '', ''),
             result: true
         },
         {
             description: 'checkRepositoryUrl返回为false',
-            inputs: getInputs('upload', '', '', 'ddd', '', '', ''),
+            inputs: getInputs('upload', '', '', 'ddd', '', '', '', ''),
             result: false
         },
         {
             description: 'checkAccountInfo返回为true',
-            inputs: getInputs('upload', '', '', '', '', '', ''),
+            inputs: getInputs('upload', '', '', '', '', '', '', ''),
             result: true
         },
         {
             description: 'checkAccountInfo返回为false',
-            inputs: getInputs('upload', '', '', '', '', 'xxxx', ''),
+            inputs: getInputs('upload', '', '', '', '', 'xxxx', '', ''),
             result: false
         }
     ];
@@ -127,22 +155,22 @@ describe('test check account info is valid', () => {
     const testCase = [
         {
             description: '用户名密码都输入',
-            inputs: getInputs('', '', '', '', 'username', 'password', ''),
+            inputs: getInputs('', '', '', '', 'username', 'password', '', ''),
             result: true
         },
         {
             description: '用户名密码都不输入',
-            inputs: getInputs('', '', '', '', '', '', ''),
+            inputs: getInputs('', '', '', '', '', '', '', ''),
             result: true
         },
         {
             description: '只输入用户名',
-            inputs: getInputs('', '', '', '', 'username', '', ''),
+            inputs: getInputs('', '', '', '', 'username', '', '', ''),
             result: false
         },
         {
             description: '只输入密码',
-            inputs: getInputs('', '', '', '', '', 'password', ''),
+            inputs: getInputs('', '', '', '', '', 'password', '', ''),
             result: false
         }
     ];
@@ -158,12 +186,12 @@ describe('test check account info is valid', () => {
     const testCase = [
         {
             description: '上传提示',
-            inputs: getInputs('upload', '', '', '', '', '', 'pypi'),
+            inputs: getInputs('upload', '', '', '', '', '', 'pypi', ''),
             result: 'Run the following command to publish the Python package to the PyPI repository: twine upload -r pypi dist/*'
         },
         {
             description: '下载提示',
-            inputs: getInputs('install', '', '', '', '', '', ''),
+            inputs: getInputs('install', '', '', '', '', '', '', ''),
             result: 'Run the following command to install the PyPI package: pip install <PyPI name>'
         }
     ];

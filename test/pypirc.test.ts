@@ -13,7 +13,8 @@ describe('test get pypric contents', () => {
                 repository: '',
                 username: '',
                 password: '',
-                indexServer: ''
+                indexServer: '',
+                tools: ''
             },
             result: `[distutils]\nindex-servers=pypi\n\n[pypi]\nrepository = https://pypi.org/simple\n`
         },
@@ -26,7 +27,8 @@ describe('test get pypric contents', () => {
                 repository: 'https://repo.huaweicloud.com/repository/pypi/simple',
                 username: '',
                 password: '',
-                indexServer: ''
+                indexServer: '',
+                tools: ''
             },
             result: `[distutils]\nindex-servers=pypi\n\n[pypi]\nrepository = https://repo.huaweicloud.com/repository/pypi/simple\n`
         },
@@ -39,7 +41,8 @@ describe('test get pypric contents', () => {
                 repository: '',
                 username: 'username',
                 password: 'password',
-                indexServer: ''
+                indexServer: '',
+                tools: ''
             },
             result: `[distutils]\nindex-servers=pypi\n\n[pypi]\nrepository = https://pypi.org/simple\nusername = username\npassword = password\n`
         }
@@ -75,7 +78,8 @@ describe('test generate pypirc config', () => {
                 repository: '',
                 username: '',
                 password: '',
-                indexServer: ''
+                indexServer: '',
+                tools: ''
             },
             result: '[distutils]\nindex-servers=pypi\n\n[pypi]\nrepository = https://pypi.org/simple\n'
         }

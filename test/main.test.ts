@@ -11,7 +11,7 @@ jest.mock('../src/twineHelper');
 jest.mock('../src/pypirc');
 jest.mock('../src/pip');
 
-function getInputs(pypiOperationType: string, indexUrl: string, trustedHost: string, repository: string, username: string, password: string, indexServer: string) {
+function getInputs(pypiOperationType: string, indexUrl: string, trustedHost: string, repository: string, username: string, password: string, indexServer: string, tools: string) {
     return {
         pypiOperationType: pypiOperationType,
         indexUrl: indexUrl,
@@ -19,13 +19,14 @@ function getInputs(pypiOperationType: string, indexUrl: string, trustedHost: str
         repository: repository,
         username: username,
         password: password,
-        indexServer: indexServer
+        indexServer: indexServer,
+        tools: tools
     };
 }
 
 test('mock checkInputs return true and pypiOperationType is install', async () => {
     jest.spyOn(utils, 'checkInputs').mockReturnValue(true);
-    jest.spyOn(context, 'getInputs').mockReturnValue(getInputs('install', '', '', '', '', '', ''));
+    jest.spyOn(context, 'getInputs').mockReturnValue(getInputs('install', '', '', '', '', '', '', ''));
     jest.spyOn(utils, 'getPypiTips').mockReturnValue(
         'Run the following command to install the PyPI package: pip install <PyPI name>'
     );
@@ -48,7 +49,7 @@ test('mock checkInputs return true and pypiOperationType is install', async () =
 
 test('mock checkInputs return true and pypiOperationType is upload', async () => {
     jest.spyOn(utils, 'checkInputs').mockReturnValue(true);
-    jest.spyOn(context, 'getInputs').mockReturnValue(getInputs('upload', '', '', '', '', '', ''));
+    jest.spyOn(context, 'getInputs').mockReturnValue(getInputs('upload', '', '', '', '', '', '', ''));
     jest.spyOn(utils, 'getPypiTips').mockReturnValue(
         'Run the following command to publish the Python package to the PyPI repository: twine upload -r pypi dist/*'
     );
