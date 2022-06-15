@@ -18,7 +18,7 @@ export function getInputs(): Inputs {
         repository: core.getInput('repository', {required: false}),
         username: core.getInput('username', {required: false}),
         password: core.getInput('password', {required: false}),
-        indexServer: core.getInput('index-server', {required: false}),
+        indexServer: core.getInput('index-server', {required: false})
     };
 }
 

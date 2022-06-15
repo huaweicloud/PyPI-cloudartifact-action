@@ -1,6 +1,15 @@
 import * as utils from '../src/utils';
 
-function getInputs(pypiOperationType: string, indexUrl: string, trustedHost: string, repository: string, username: string, password: string, indexServer: string, tools: string) {
+function getInputs(
+    pypiOperationType: string,
+    indexUrl: string,
+    trustedHost: string,
+    repository: string,
+    username: string,
+    password: string,
+    indexServer: string,
+    tools: string
+) {
     return {
         pypiOperationType: pypiOperationType,
         indexUrl: indexUrl,
@@ -27,7 +36,16 @@ describe('test check input is valid', () => {
         },
         {
             description: 'pypiOperationType=install checkInstallInput为false',
-            inputs: getInputs('install', 'https://pypi.org/simple', 'pypi.org1', '', '', '', '', ''),
+            inputs: getInputs(
+                'install',
+                'https://pypi.org/simple',
+                'pypi.org1',
+                '',
+                '',
+                '',
+                '',
+                ''
+            ),
             result: false
         },
         {
@@ -58,7 +76,16 @@ describe('test InstallInput is valid', () => {
         },
         {
             description: 'indexUrl不包含trustedHost',
-            inputs: getInputs('install', 'https://pypi.org/simple', 'pypi.org1', '', '', '', '', ''),
+            inputs: getInputs(
+                'install',
+                'https://pypi.org/simple',
+                'pypi.org1',
+                '',
+                '',
+                '',
+                '',
+                ''
+            ),
             result: false
         },
         {

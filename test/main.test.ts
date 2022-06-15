@@ -11,7 +11,15 @@ jest.mock('../src/toolsHelper');
 jest.mock('../src/pypirc');
 jest.mock('../src/pip');
 
-function getInputs(pypiOperationType: string, indexUrl: string, trustedHost: string, repository: string, username: string, password: string, indexServer: string) {
+function getInputs(
+    pypiOperationType: string,
+    indexUrl: string,
+    trustedHost: string,
+    repository: string,
+    username: string,
+    password: string,
+    indexServer: string
+) {
     return {
         pypiOperationType: pypiOperationType,
         indexUrl: indexUrl,
@@ -19,7 +27,7 @@ function getInputs(pypiOperationType: string, indexUrl: string, trustedHost: str
         repository: repository,
         username: username,
         password: password,
-        indexServer: indexServer,
+        indexServer: indexServer
     };
 }
 
@@ -42,8 +50,6 @@ test('mock checkInputs return true and pypiOperationType is install', async () =
     expect(tools.installPythonTool).toHaveBeenCalled();
 
     expect(pypi.generatePypirc).not.toHaveBeenCalled();
-
-    
 });
 
 test('mock checkInputs return true and pypiOperationType is upload', async () => {
@@ -65,8 +71,6 @@ test('mock checkInputs return true and pypiOperationType is upload', async () =>
     expect(tools.installPythonTool).toHaveBeenCalled();
 
     expect(pypi.generatePypirc).toHaveBeenCalled();
-
-    
 });
 
 test('mock checkInputs return false', async () => {
