@@ -7,6 +7,11 @@ import * as context from './context';
  * @returns
  */
 export function checkInputs(inputs: context.Inputs): boolean {
+    if (!checkPythonTools(inputs.trustedHost)) {
+        core.setFailed('The tools supports: twine,build,setuptools,wheel.');
+        return false;
+    }
+
     if (inputs.pypiOperationType === 'install') {
         return checkInstallInput(inputs);
     }
@@ -17,6 +22,19 @@ export function checkInputs(inputs: context.Inputs): boolean {
 
     core.setFailed('The pypi-operation-type value can only be install or upload');
     return false;
+}
+
+export function checkPythonTools(tools: string): boolean {
+    if (tools) {
+        const toolsArray = tools.split(',');
+        for (let i = 0; i < toolsArray.length; i++) {
+            if (!context.TOOLS_ARRAY.includes(toolsArray[i])) {
+                core.setFailed('The tools supports: twine,build,setuptools,wheel.');
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 /**
