@@ -1,7 +1,7 @@
 import * as core from '@actions/core';
 import * as context from './context';
 import * as utils from './utils';
-import * as twine from './twineHelper';
+import * as tool from './toolsHelper';
 import * as pypi from './pypirc';
 import * as pip from './pip';
 
@@ -19,7 +19,7 @@ export async function run() {
         core.info('Generate pypirc configurations for uploading PyPI packages.');
 
         // 安装依赖工具twine
-        await twine.installTwine();
+        await tool.installPythonTool('twine');
 
         // 生成.pypirc配置内容
         pypi.generatePypirc(inputs);
@@ -29,6 +29,9 @@ export async function run() {
 
     if (inputs.pypiOperationType === 'install') {
         core.info('Generate pip configurations for downloading PyPI packages.');
+
+        // 安装依赖工具build
+        await tool.installPythonTool('build');
 
         // 生成pip配置内容
         pip.generatePipConfig(inputs);

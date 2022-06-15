@@ -28,9 +28,6 @@ inputs:
     description: 'The name of the section describing a repository in the .pypirc file.'
     required: false
     default: 'pypi'
-  tools:
-    description: 'The most relevant tools in the space of Python installation and packaging.Separate different tools with commas'
-    required: false
 branding:
   icon: 'cloud'
   color: 'red'

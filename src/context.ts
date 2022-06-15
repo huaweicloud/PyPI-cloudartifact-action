@@ -8,7 +8,6 @@ export interface Inputs {
     username: string;
     password: string;
     indexServer: string;
-    tools: string;
 }
 
 export function getInputs(): Inputs {
@@ -20,22 +19,7 @@ export function getInputs(): Inputs {
         username: core.getInput('username', {required: false}),
         password: core.getInput('password', {required: false}),
         indexServer: core.getInput('index-server', {required: false}),
-        tools: core.getInput('tools', {required: false})
     };
 }
 
 export const DEFAULT_REGISTRY = 'https://pypi.org/simple';
-
-/**
- * 目前支持安装的python依赖工具：
- * twine: Python打包上传工具	
- * build: Python构建工具		
- * setuptools: Python构建工具		
- * wheel: Python构建工具		
- */
- export const TOOLS_ARRAY: string[] = [
-    'twine',
-    'build',
-    'setuptools',
-    'wheel'
-  ];

@@ -16,16 +16,6 @@ function getInputs(pypiOperationType: string, indexUrl: string, trustedHost: str
 describe('test check input is valid', () => {
     const testCase = [
         {
-            description: 'tools不合法',
-            inputs: getInputs('ddddd', '', '', '', '', '', '', 'test'),
-            result: false
-        },
-        {
-            description: 'tools合法',
-            inputs: getInputs('install', '', '', '', '', '', '', ''),
-            result: true
-        },
-        {
             description: 'pypiOperationType!=install也!=upload',
             inputs: getInputs('ddddd', '', '', '', '', '', '', ''),
             result: false
@@ -55,23 +45,6 @@ describe('test check input is valid', () => {
         const {description, inputs, result} = item;
         test(`${description},判断结果：${result}`, async () => {
             expect(utils.checkInputs(inputs)).toBe(result);
-        });
-    });
-});
-
-
-describe('test checkPythonTools is valid', () => {
-    const testCase = [
-        {tools: '', result: true},
-        {tools: 'twine', result: true},
-        {tools: 'twine,build,setuptools,wheel', result: true},
-        {tools: 'test', result: false},
-        {tools: 'twine build setuptools wheel', result: false},
-    ];
-    testCase.forEach(item => {
-        const {tools, result} = item;
-        test(`tools输入为(${tools}),判断结果：${result}`, async () => {
-            expect(utils.checkPythonTools(tools)).toBe(result);
         });
     });
 });
