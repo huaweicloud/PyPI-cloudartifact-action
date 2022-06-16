@@ -111,7 +111,6 @@ function run() {
             yield tool.installPythonTool('build');
             // 生成.pypirc配置内容
             pypi.generatePypirc(inputs);
-            return;
         }
         if (inputs.pypiOperationType === 'install') {
             core.info('Generate pip configurations for downloading PyPI packages.');
@@ -317,8 +316,24 @@ const core = __importStar(__nccwpck_require__(186));
 const exec = __importStar(__nccwpck_require__(514));
 function execCommand(commandLine, args) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield exec.exec(commandLine, args);
-        core.info('exec command successfully.');
+        try {
+            core.startGroup(`Exec Command Start`);
+            yield exec
+                .getExecOutput(commandLine, args, {
+                ignoreReturnCode: false
+            })
+                .then(result => {
+                if (result.exitCode !== 0 && result.stderr.length > 0) {
+                    core.info(result.stderr);
+                    return false;
+                }
+                return result.exitCode === 0;
+            });
+        }
+        catch (error) {
+            core.info(`Exec Command Failed`);
+            return false;
+        }
         return true;
     });
 }
@@ -331,11 +346,12 @@ function installPythonTool(tool) {
     return __awaiter(this, void 0, void 0, function* () {
         if (yield execCommand('pip', ['install', '--upgrade', tool])) {
             core.info(`The ${tool} is installed successfully.`);
+            if (yield execCommand('python', ['-m', tool, '--version'])) {
+                core.info(`Checking ${tool} Installation: true`);
+            }
+            return true;
         }
-        if (yield execCommand('python', ['-m', tool, '--version'])) {
-            core.info(`Checking ${tool} Installation: true`);
-        }
-        return true;
+        return false;
     });
 }
 exports.installPythonTool = installPythonTool;

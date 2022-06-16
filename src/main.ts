@@ -26,8 +26,6 @@ export async function run() {
 
         // 生成.pypirc配置内容
         pypi.generatePypirc(inputs);
-
-        return;
     }
 
     if (inputs.pypiOperationType === 'install') {
