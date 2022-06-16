@@ -46,8 +46,8 @@ trusted-host = <repository host>
 | index-url    |   false    |   https://pypi.org/simple      | pip.conf文件中index-url的内容|
 | trusted-host    |   false    |   pypi.org      | pip.conf文件中trusted-host的内容|
 | repository    |   false    |    https://pypi.org/simple      | .pypirc文件中repository的内容|
-| username    |   false    |         | .pypirc文件中username的内容|
-| password    |   false    |         | .pypirc文件中password的内容|
+| username    |   false    |         | .pypirc文件中username的内容,建议在github项目的SettingS--Secret--Actions下添加 PyPI_USERNAME参数|
+| password    |   false    |         | .pypirc文件中password的内容,建议在github项目的Settings--Secret--Actions下添加 PyPI_PASSWORD参数|
 | index-server    |   false    |   pypi      | .pypirc文件中index-server的内容|
 
 具体可以看下面图中action参数对应的PyPI配置文件的内容
