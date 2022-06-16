@@ -1,0 +1,37 @@
+# action.yml
+name: 'HuaweiCloud PyPI CloudArtifact'
+description: 'Action for uploading/downloading PyPI packages to HuaweiCloud PyPI CloudArtifact'
+inputs:
+  pypi-operation-type:
+    description: 'install or upload. install: to install PyPI package from the repository; upload: publish PyPI package to the repository'
+    required: true
+    default: 'install'
+  index-url:
+    description: 'the index-url of pip config file'
+    required: false
+    default: 'https://pypi.org/simple'
+  trusted-host:
+    description: 'the trusted-host of pip config file'
+    required: false
+    default: 'pypi.org'
+  repository:
+    description: 'The URL of the PyPI repository in the .pypirc file.'
+    required: false
+    default: 'https://pypi.org/simple'
+  username:
+    description: 'The registered username on the repository in the .pypirc file.'
+    required: false
+  password:
+    description: 'The password that will used to authenticate the username in the .pypirc file.'
+    required: false
+  index-server:
+    description: 'The name of the section describing a repository in the .pypirc file.'
+    required: false
+    default: 'pypi'
+branding:
+  icon: 'cloud'
+  color: 'red'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
+
