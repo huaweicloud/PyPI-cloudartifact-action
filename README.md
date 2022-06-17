@@ -13,8 +13,8 @@
 > 不是仓库成员或者没有对应权限需要租户帐号、仓库管理员修改为对应的仓库角色。
 
 (3) CloudArtifact PyPI 私仓上传下载账号信息获取  
-[私有依赖库首页](https://devcloud.cn-north-4.huaweicloud.com/cloudartifact/repository)->点击需要的PyPI仓库->右上角操作指导->点击下载配置文件->根据上传或者下载场景，下载对应的配置信息
-![图一](imgs/pypi-config-download.PNG)
+[私有依赖库首页](https://devcloud.cn-north-4.huaweicloud.com/cloudartifact/repository)->点击需要的PyPI仓库->右上角操作指导->点击下载配置文件->根据上传或者下载场景，下载对应的配置文件  
+![图一](https://github.com/huaweicloud/PyPI-cloudartifact-action/blob/master/imgs/pypi-config-download.PNG)
 
 ## 参数说明
 ### 1.首先需要了解PyPI配置文件：  
@@ -51,9 +51,8 @@ trusted-host = <repository host>
 | index-server    |   false    |   pypi      | .pypirc文件中index-server的内容|
 
 具体可以看下面图中action参数对应的PyPI配置文件的内容
-![图二](imgs/install-parameters.PNG)
-![图三](imgs/upload-parameters.PNG)
-
+![图二](https://github.com/huaweicloud/PyPI-cloudartifact-action/blob/master/imgs/install-parameters.PNG)
+![图三](https://github.com/huaweicloud/PyPI-cloudartifact-action/blob/master/imgs/upload-parameters.PNG)
 ## **CloudArtifact PyPI 私仓workflows样例**
 ### 1.twine upload: 推送PyPI package到 CloudArtifact PyPI 私仓 
 步骤说明：  
