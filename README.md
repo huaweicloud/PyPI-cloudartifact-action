@@ -51,8 +51,8 @@ trusted-host = <repository host>
 | index-server    |   false    |   pypi      | .pypirc文件中index-server的内容|
 
 具体可以看下面图中action参数对应的PyPI配置文件的内容
-![图二](https://github.com/Chenyt26/PyPI/blob/master/imgs/install-parameters.PNG)
-![图三](https://github.com/Chenyt26/PyPI/blob/master/imgs/upload-parameters.PNG)
+![图二](https://github.com/huaweicloud/PyPI-cloudartifact-action/blob/master/imgs/install-parameters.PNG)
+![图三](https://github.com/huaweicloud/PyPI-cloudartifact-action/blob/master/imgs/upload-parameters.PNG)
 ## **CloudArtifact PyPI 私仓workflows样例**
 ### 1.twine upload: 推送PyPI package到 CloudArtifact PyPI 私仓 
 步骤说明：  
