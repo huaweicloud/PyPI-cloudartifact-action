@@ -14,7 +14,7 @@
 
 (3) CloudArtifact PyPI 私仓上传下载账号信息获取  
 [私有依赖库首页](https://devcloud.cn-north-4.huaweicloud.com/cloudartifact/repository)->点击需要的PyPI仓库->右上角操作指导->点击下载配置文件->根据上传或者下载场景，下载对应的配置文件  
-![图一](https://github.com/huaweicloud/PyPI-cloudartifact-action/blob/master/imgs/pypi-config-download.PNG)
+![图一](imgs/pypi-config-download.PNG)
 
 ## 参数说明
 ### 1.首先需要了解PyPI配置文件：  
@@ -31,7 +31,7 @@ password = <repository password>
 ```
 > Reference: [.pypirc file](https://packaging.python.org/en/latest/specifications/pypirc/)  
 
-2.PyPI 下载配置文件 ~/.pip/pip.conf （Windows路径为： C:\Users\ <UserName>\pip\pip.ini ）
+2.PyPI 下载配置文件 ~/.pip/pip.conf （Windows路径为： C:\Users\\`<UserName>`\pip\pip.ini ）
 ```
 [global]
 index-url = <repository URL with authentication>
@@ -51,8 +51,8 @@ trusted-host = <repository host>
 | index-server    |   false    |   pypi      | .pypirc文件中index-server的内容|
 
 具体可以看下面图中action参数对应的PyPI配置文件的内容
-![图二](https://github.com/huaweicloud/PyPI-cloudartifact-action/blob/master/imgs/install-parameters.PNG)
-![图三](https://github.com/huaweicloud/PyPI-cloudartifact-action/blob/master/imgs/upload-parameters.PNG)
+![图二](imgs/install-parameters.PNG)
+![图三](imgs/upload-parameters.PNG)
 ## **CloudArtifact PyPI 私仓workflows样例**
 ### 1.twine upload: 推送PyPI package到 CloudArtifact PyPI 私仓 
 步骤说明：  
@@ -74,13 +74,13 @@ jobs:
       - uses: actions/checkout@v2
 
         # GitHub Action环境默认python版本为3.8.X，可以根据自己项目需求修改python版本
-      - name: Setup node
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: 3.8
 
         # 华为云CloudArtifact PyPI 私仓配置 
-      - name: Setup HuaweiCloud PyPI CloudArtifact
+      - name: Setup Huawei Cloud PyPI CloudArtifact
         uses: huaweicloud/PyPI-cloudartifact-action@v1.0.0
         with: 
           pypi-operation-type: upload
@@ -103,7 +103,7 @@ jobs:
 (1)代码检出  
 (2)设置python版本  
 (3)华为云CloudArtifact PyPI 私仓配置    
-(4)pip install 推送PyPI package到 CloudArtifact PyPI 私仓  
+(4)pip install 拉取CloudArtifact PyPI 私仓的PyPI package  
 ```yaml
 name: PyPI Cloudartifact Action Install Demo
 on:
@@ -111,29 +111,29 @@ on:
     branches:
        master
 jobs:
-  Publish-to-CloudArtifact-PyPI:
+  Install-from-CloudArtifact-PyPI:
     runs-on: ubuntu-latest
     steps:
         # 代码检出
       - uses: actions/checkout@v2
 
         # GitHub Action环境默认python版本为3.8.X，可以根据自己项目需求修改python版本
-      - name: Setup node
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: 3.8
 
         # 华为云CloudArtifact PyPI 私仓配置 
-        # 从华为云私有库获取的PyPI的index-url:https://{username}:{password}@devrepo.devcloud.cn-north-4.huaweicloud.com/artgalaxy/api/pypi/cn-north-4_dfbdbf2e511e**********653358d65c_pypi_0/simple
         # action的index-url可以这样设置：https://${{ secrets.PyPI_AUTH }}@devrepo.devcloud.cn-north-4.huaweicloud.com/artgalaxy/api/pypi/cn-north-4_dfbdbf2e511e**********653358d65c_pypi_0/simple
-      - name: Setup HuaweiCloud PyPI CloudArtifact
+        # ${{ secrets.PyPI_AUTH }}的内容是：从华为云私有库获取PyPI的index-url中的{username}:{password}
+      - name: Setup Huawei Cloud PyPI CloudArtifact
         uses: huaweicloud/PyPI-cloudartifact-action@v1.0.0
         with: 
           pypi-operation-type: install
           index-url: '<repository URL with authentication>'
           trusted-host: '<repository URL host>'
 
-        # 推送PyPI package到 CloudArtifact PyPI 私仓  
+        # 拉取CloudArtifact PyPI 私仓的PyPI package
       - name: Install PyPI package 
         run: |
           pip install <PyPI name>

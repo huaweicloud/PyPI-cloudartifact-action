@@ -1,7 +1,7 @@
 {
     "name": "pypi-cloudartifact-action",
     "version": "1.0.0",
-    "description": "Action for uploading or downloading artifact from HuaweiCloud PyPI CloudArtifact",
+    "description": "Action for uploading or downloading artifact from Huawei Cloud PyPI CloudArtifact",
     "main": "lib/main.js",
     "scripts": {
         "build": "tsc",
