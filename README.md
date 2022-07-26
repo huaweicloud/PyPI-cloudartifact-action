@@ -31,7 +31,7 @@ password = <repository password>
 ```
 > Reference: [.pypirc file](https://packaging.python.org/en/latest/specifications/pypirc/)  
 
-2.PyPI 下载配置文件 ~/.pip/pip.conf （Windows路径为： C:\Users\<UserName>\pip\pip.ini ）
+2.PyPI 下载配置文件 ~/.pip/pip.conf （Windows路径为： C:\Users\\`<UserName>`\pip\pip.ini ）
 ```
 [global]
 index-url = <repository URL with authentication>
