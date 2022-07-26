@@ -1,6 +1,6 @@
 # action.yml
-name: 'HuaweiCloud PyPI CloudArtifact'
-description: 'Action for uploading/downloading PyPI packages to HuaweiCloud PyPI CloudArtifact'
+name: 'Huawei Cloud PyPI CloudArtifact'
+description: 'Action for uploading/downloading PyPI packages to Huawei Cloud PyPI CloudArtifact'
 inputs:
   pypi-operation-type:
     description: 'install or upload. install: to install PyPI package from the repository; upload: publish PyPI package to the repository'
