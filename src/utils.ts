@@ -1,7 +1,7 @@
 import * as core from '@actions/core';
 import * as context from './context';
 
-const INDEX_SERVER_REG = new RegExp(/^[a-zA-Z0-9-\_]{2,100}$/);
+const INDEX_SERVER_REG = new RegExp(/^[a-zA-Z0-9-_]{2,100}$/);
 
 /**
  * 检查每个inputs 属性value是否合法
