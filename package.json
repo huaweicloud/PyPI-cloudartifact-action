@@ -1,33 +1,22 @@
 {
     "name": "pypi-cloudartifact-action",
-    "version": "1.0.0",
+    "version": "v1.1.0",
     "description": "Action for uploading or downloading artifact from Huawei Cloud PyPI CloudArtifact",
-    "main": "lib/main.js",
+    "main": "src/main.ts",
     "scripts": {
         "build": "tsc",
-        "run": "node ./lib/main.js",
-        "package": "ncc build --source-map --license licenses.txt",
+        "package": "ncc build -m --license licenses.txt",
         "lint-create": "eslint --init",
         "lint": "eslint src",
         "format": "prettier --write **/*.ts",
         "format-check": "prettier --check **/*.ts",
         "test": "jest --collectCoverage",
-        "all": "npm run lint && npm run format && npm run build && npm run package"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/huaweicloud/PyPI-cloudartifact-action.git"
+        "all": "npm run test && npm run lint && npm run format && npm run build && npm run package"
     },
     "keywords": [
         "PyPI",
         "CloudArtifact"
     ],
-    "author": "Chenyt26",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/huaweicloud/PyPI-cloudartifact-action/issues"
-    },
-    "homepage": "https://github.com/huaweicloud/PyPI-cloudartifact-action#readme",
     "devDependencies": {
         "@types/jest": "^28.1.1",
         "@types/uuid": "^8.3.4",

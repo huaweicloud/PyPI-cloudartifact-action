@@ -24,13 +24,13 @@ describe('test get pypric contents', () => {
                 pypiOperationType: '',
                 indexUrl: '',
                 trustedHost: '',
-                repository: 'https://repo.huaweicloud.com/repository/pypi/simple',
+                repository: 'https://repo.xxx.xxx/repository/pypi/simple',
                 username: '',
                 password: '',
                 indexServer: '',
                 tools: ''
             },
-            result: `[distutils]\nindex-servers=pypi\n\n[pypi]\nrepository = https://repo.huaweicloud.com/repository/pypi/simple\n`
+            result: `[distutils]\nindex-servers=pypi\n\n[pypi]\nrepository = https://repo.xxx.xxx/repository/pypi/simple\n`
         },
         {
             description: '传用户名密码',

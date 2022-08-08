@@ -141,3 +141,8 @@ jobs:
 
 
 详情可参考 [PyPI-cloudartifact-workflow-samples](https://github.com/huaweicloud/PyPI-cloudartifact-workflow-samples)
+
+## 公网域名说明
+```
+PyPI官方镜像源：'https://pypi.org/simple'
+```
