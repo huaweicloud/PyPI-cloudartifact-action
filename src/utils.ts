@@ -1,6 +1,8 @@
 import * as core from '@actions/core';
 import * as context from './context';
 
+const INDEX_SERVER_REG = new RegExp(/^[a-zA-Z0-9-_]{2,100}$/);
+
 /**
  * 检查每个inputs 属性value是否合法
  * @param inputs
@@ -50,6 +52,10 @@ export function checkUploadInput(inputs: context.Inputs): boolean {
     if (!checkAccountInfo(inputs)) {
         return false;
     }
+    if (!checkIndexServer(inputs.indexServer)) {
+        core.setFailed('index-server is not correct.');
+        return false;
+    }
     return true;
 }
 
@@ -91,4 +97,15 @@ export function getPypiTips(inputs: context.Inputs): string {
     return inputs.pypiOperationType === 'upload'
         ? `Run the following command to publish the Python package to the PyPI repository: twine upload -r ${inputs.indexServer} dist/*`
         : 'Run the following command to install the PyPI package: pip install <PyPI name>';
+}
+
+/**
+ * 检查region是否合法
+ * @returns
+ */
+ export function checkIndexServer(indexServer: string): boolean {
+     if (indexServer) {
+        return INDEX_SERVER_REG.test(indexServer);
+     }
+    return true;
 }

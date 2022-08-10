@@ -123,7 +123,12 @@ describe('test UploadInput is valid', () => {
             description: 'checkAccountInfo返回为false',
             inputs: getInputs('upload', '', '', '', '', 'xxxx', '', ''),
             result: false
-        }
+        },
+        {
+            description: 'checkIndexServer返回为false',
+            inputs: getInputs('upload', '', '', '', '', '', 'pypi^&', ''),
+            result: false
+        },
     ];
     testCase.forEach(item => {
         const {description, inputs, result} = item;
@@ -199,6 +204,22 @@ describe('test check account info is valid', () => {
         const {description, inputs, result} = item;
         test(`${description},判断结果：${result}`, async () => {
             expect(utils.getPypiTips(inputs)).toBe(result);
+        });
+    });
+});
+
+describe('test whether index-server is valid', () => {
+    const testCase = [
+        {indexServer: 'pypi', result: true},
+        {indexServer: 'p', result: false},
+        {indexServer: '', result: true},
+        {indexServer: 'pypi%^', result: false},
+        {indexServer: 'pypipypipypipypipypipypipypipypipypipypipypipypipypipypipypipypipypipypipypipypipypipypipypipypipypipypipypipypipypipypipypipypi', result: false}
+    ];
+    testCase.forEach(item => {
+        const {indexServer, result} = item;
+        test(`indexServer(${indexServer}),判断结果：${result}`, async () => {
+            expect(utils.checkIndexServer(indexServer)).toBe(result);
         });
     });
 });
