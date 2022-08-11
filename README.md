@@ -81,7 +81,7 @@ jobs:
 
         # 华为云CloudArtifact PyPI 私仓配置 
       - name: Setup Huawei Cloud PyPI CloudArtifact
-        uses: huaweicloud/PyPI-cloudartifact-action@v1.0.0
+        uses: huaweicloud/PyPI-cloudartifact-action@v1.1.0
         with: 
           pypi-operation-type: upload
           repository: '<repository URL>'
@@ -127,7 +127,7 @@ jobs:
         # action的index-url可以这样设置：https://${{ secrets.PyPI_AUTH }}@devrepo.devcloud.cn-north-4.huaweicloud.com/artgalaxy/api/pypi/cn-north-4_dfbdbf2e511e**********653358d65c_pypi_0/simple
         # ${{ secrets.PyPI_AUTH }}的内容是：从华为云私有库获取PyPI的index-url中的{username}:{password}
       - name: Setup Huawei Cloud PyPI CloudArtifact
-        uses: huaweicloud/PyPI-cloudartifact-action@v1.0.0
+        uses: huaweicloud/PyPI-cloudartifact-action@v1.1.0
         with: 
           pypi-operation-type: install
           index-url: '<repository URL with authentication>'
@@ -141,3 +141,7 @@ jobs:
 
 
 详情可参考 [PyPI-cloudartifact-workflow-samples](https://github.com/huaweicloud/PyPI-cloudartifact-workflow-samples)
+
+## Action中使用公网地址说明
+1. [PyPI官方镜像源](https://pypi.org/simple)
+
